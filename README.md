@@ -111,3 +111,84 @@ kubectl edit -f .\nginx.pod.yml
 kubectl delete -f .\nginx.pod.yml
 
 ```
+
+## Pod's Health
+
+https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+
+
+Types of probes 
+- Liveness Probe
+- Readness probes
+
+Failed Pod are recreated by default
+
+You have several types of command :
+- exec
+  ```
+      livenessProbe:
+      exec:
+        command:
+        - cat
+        - /tmp/healthy
+      initialDelaySeconds: 5
+      periodSeconds: 5
+  ```
+- httpGet
+  ```
+      livenessProbe:
+        httpGet:
+          path: /index.html
+          port: 80
+        initialDelaySeconds: 15
+        timeoutSeconds: 2 # Default is 1
+        periodSeconds: 5 # Default is 10
+        failureThreshold: 1 # Default is 3
+  ```
+- tcpSocket
+  ```
+      readinessProbe:
+      tcpSocket:
+        port: 8080
+      initialDelaySeconds: 5
+      periodSeconds: 10
+
+  ```
+
+# Deployments
+
+**ReplicaSet** is a declarative way to manage Pods
+A **Deployment** is a declarative way to manage Pods using a ReplicaSet
+
+Deployments and ReplicaSets ensure Pods stay running and can be used to scale Pods
+
+ReplicaSet is a Pod controller :
+- Self-Healing mechanism
+- Ensure the number of Pods are available
+- Provide Fault tolerance
+- Pods scaling
+- Relies on a Pod template
+
+A deployment manages Pods : 
+- Pods are managed using ReplicaSets
+- Scale ReplicatSets,which scale Pods
+- 0-downtime update by creating and destroying ReplicaSets
+- Provides rollback functionality
+- Creates a unique label that is assigned to the ReplicaSet and generated Pods
+- Yaml is very similar to a ReplicaSet
+
+```
+# Create a Deployment
+kubectl create -f .\nginx.deployment.yml
+kubectl apply -f .\nginx.deployment.yml --save-config
+
+# List deplyments
+kubectl get deployments --show-labels
+kubectl get deployments -l app=my-nginx
+
+# Delete deployment
+kubectl delete deplyment [deployment-name] 
+
+# Scale Pods to 5
+kubectl scale deployment [deply-name] --replicas=5
+```
