@@ -192,3 +192,35 @@ kubectl delete deplyment [deployment-name]
 # Scale Pods to 5
 kubectl scale deployment [deply-name] --replicas=5
 ```
+# Deployments Options
+
+Zero downtime deployments
+
+Several options are available :
+- Rolling updates
+- Blue-green deployments
+- Canary deployments
+- Rollbacks
+
+Rolling updates is the default deployment method
+
+```
+cd ./node-app
+
+# Build all docker images inside v1,v2,v3,v4
+docker build --pull --rm -f "node-app\v1\dockerfile" -t node-app:1.0 "node-app\v1"
+docker build --pull --rm -f "node-app\v2\dockerfile" -t node-app:2.0 "node-app\v2"
+docker build --pull --rm -f "node-app\v3\dockerfile" -t node-app:3.0 "node-app\v3"
+docker build --pull --rm -f "node-app\v4\dockerfile" -t node-app:4.0 "node-app\v4"
+
+# Run load balancer
+kubectl apply -f .\node-app.service.yml
+
+# Run deployment
+kubectl apply -f .\node-app-v1.deployment.yml
+
+# Run migration
+kubectl.exe apply -f .\node-app-v2.deployment.yml
+kubectl.exe apply -f .\node-app-v3.deployment.yml
+
+```
