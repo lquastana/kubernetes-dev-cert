@@ -187,7 +187,7 @@ kubectl get deployments --show-labels
 kubectl get deployments -l app=my-nginx
 
 # Delete deployment
-kubectl delete deplyment [deployment-name] 
+kubectl delete deployment [deployment-name] 
 
 # Scale Pods to 5
 kubectl scale deployment [deply-name] --replicas=5
@@ -258,8 +258,75 @@ Services can be define in deffirent ways :
 ```
 # Listen on port 8080 locally and forward to port 80 in a pod
 kubectl port-forward pod/[name] 8080:80
+
 # Listen a port 8080 and forward to deployment's Pod
 kubectl port-forward deployment/[name] 8080:80
+
 # Listen a port 8080 and forward to service'ss Pod
 kubectl port-forward service/[name] 8080:80
+```
+
+## Implementing a service configuration
+
+Implementing a service : 
+- [Example port forwarding](services/sample.service.yml)
+- [Example nodePort](services/nodeport.service.yml)
+- [Example loadBalancer](services/loadbalancer.service.yml)
+- [Example externalService](services/externalname.service.yml)
+
+## Creating a service with file
+
+```
+# Create a service
+kubectl create -f file.service.yml
+
+# Update a service
+# Assumes --save-configd was used with create
+kubectl apply -f file.service.yml
+
+
+# Delete a service
+kubectl delete -f file.service.yml
+
+# Test pod service with curl
+kubectl exec [pod-name] -- curl -s http://podIP
+
+# Install and use curl
+kubectl exec [pod-name] -it sh
+apk add curl
+curl -s http://podIP
+
+```
+
+## Pratice service
+
+
+```
+# Create frontend pods
+kubectl.exe apply -f .\nginx.deployment.yml 
+
+# Verify pods
+kubectl get all
+
+# Get pod info (like ip) 
+kubectl.exe pod frontend-69f46949bc-pp9q9 -o yaml
+
+# Creating a service
+kubectl.exe apply -f .\clusterIP.service.yml
+
+# See services 
+kubectl.exe get services
+
+# Service is like dns name
+curl -s nginx-clusterip:8080
+
+# Delete service
+kubectl.exe delete service nginx-clusterip
+
+# Create node port
+kubectl apply -f .\services\nodeport.service.yml
+
+# Create load balancer
+kubectl apply -f .\services\loadbalancer.service.yml
+
 ```

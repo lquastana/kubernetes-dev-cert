@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: external-service
+spec:
+  type: ExternalName
+  externalName: api.test.com
+  selector:
+    app: myapp
+  ports:
+  - port: 9000
