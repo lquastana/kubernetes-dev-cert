@@ -224,3 +224,42 @@ kubectl.exe apply -f .\node-app-v2.deployment.yml
 kubectl.exe apply -f .\node-app-v3.deployment.yml
 
 ```
+
+# Creating services
+
+## Services core concept 
+
+A service provide a single point of entry for accessing one or more Pods
+
+- Pods are ephemeral , you cant rely two Pods on IP adress.
+- Services can obstract Pod IP and manage load balancing between Pods
+- Relies on labels to associate a Service with a Pod
+- Nods kube-proxy creates a virtual IP for services
+- Layer 4
+- Service are not ephemeral
+
+## Services types
+
+Services can be define in deffirent ways : 
+
+- ClusterIP : Expose the service on cluster internal IP
+  - Only pods within the cluster can talk to the service
+  - Allow pods to talk to other Pods
+- NodePort : Expose the service on each Nodes IP at a static port
+  - Allocate a port for a range
+  - Each Node proxies the allocated port
+- LoadBalancer : Provision an external IP to act as a load balancer 
+  - NodePort and ClusterIP services are created
+- ExternalName : Maps a service to a DNS name
+
+## Creating a service with kubectl
+
+
+```
+# Listen on port 8080 locally and forward to port 80 in a pod
+kubectl port-forward pod/[name] 8080:80
+# Listen a port 8080 and forward to deployment's Pod
+kubectl port-forward deployment/[name] 8080:80
+# Listen a port 8080 and forward to service'ss Pod
+kubectl port-forward service/[name] 8080:80
+```
