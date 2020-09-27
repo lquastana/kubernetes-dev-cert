@@ -1,5 +1,10 @@
 # Certified Kubernetes Application Developer (CKAD) 
 
+- [Pods](#pods)
+- [Deployments](#deployments)
+- [Creating services](#creating-services)
+- [Storage and volumes](#storage-and-volumes)
+
 ## Installation
 
 Installing docker desktop : https://docs.docker.com/get-docker/
@@ -192,7 +197,7 @@ kubectl delete deployment [deployment-name]
 # Scale Pods to 5
 kubectl scale deployment [deply-name] --replicas=5
 ```
-# Deployments Options
+## Deployments Options
 
 Zero downtime deployments
 
@@ -364,11 +369,11 @@ kubectl apply -f .\volume\nginx-alpine-emptyDir.yml
 kubectl port-forward nginx-alpine-volume 8081:80
 
 # Run hostPad Pod
-kubectl.exe apply -f .\volume\docker-hostPath.pod.yml
+kubectl apply -f .\volume\docker-hostPath.pod.yml
 # Describe Pod
-kubectl.exe describe pod docker-volume
+kubectl describe pod docker-volume
 
 # Go inside the Pod
-kubectl.exe exec docker-volume -it sh
+kubectl exec docker-volume -it sh
 
 ```
