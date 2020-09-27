@@ -330,3 +330,45 @@ kubectl apply -f .\services\nodeport.service.yml
 kubectl apply -f .\services\loadbalancer.service.yml
 
 ```
+# Storage and volumes 
+
+## Storage CORE concept
+
+Pods are ephemeral so their file system is short lived
+Volumes is used to store application state/data for Pods and container
+A pod can have multiple volume
+Containers rely on mountPath to access a Volume
+Kubernetes supports:
+ - Volumes
+ - PersistentVolume
+ - PersistentVolumeClaims
+ - StorageClasses
+
+
+## Volumes
+
+A volume references a storage location
+It must have a unique name
+VolumeType example:
+- emptyDir : For storing transient data,useful for sharing filles between containers running in a Pod
+- hostPath: Pod mounts into the node's filesystem
+- nfs: An NFS
+-configMap/secret: Provide a Pod with access to Kubernet resources
+- persistentVolumeClaim: More persistent storage 
+- Cloud: Cluster wide storage
+
+## Volumes in action
+```
+# Run emptyDir Pod
+kubectl apply -f .\volume\nginx-alpine-emptyDir.yml
+kubectl port-forward nginx-alpine-volume 8081:80
+
+# Run hostPad Pod
+kubectl.exe apply -f .\volume\docker-hostPath.pod.yml
+# Describe Pod
+kubectl.exe describe pod docker-volume
+
+# Go inside the Pod
+kubectl.exe exec docker-volume -it sh
+
+```
